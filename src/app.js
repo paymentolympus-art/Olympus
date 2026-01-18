@@ -83,6 +83,27 @@ mongoose.connection.on('error', (error) => {
 // ROTAS
 // ========================================
 
+// Rota raiz
+app.get('/', (req, res) => {
+  res.status(200).json({
+    name: 'Insane Pay API',
+    description: 'Gateway de pagamentos PIX',
+    version: '1.0.0',
+    status: 'online',
+    endpoints: {
+      health: '/health',
+      orders: '/api/orders',
+      products: '/api/products',
+      offers: '/api/offers',
+      orderbumps: '/api/orderbumps',
+      domains: '/api/domains',
+      integrations: '/api/integrations',
+      auth: '/auth/session',
+      webhooks: '/webhooks/pix/payment'
+    }
+  });
+});
+
 // Rota de health check
 app.get('/health', (req, res) => {
   res.status(200).json({
@@ -99,7 +120,14 @@ app.get('/api', (req, res) => {
     version: '1.0.0',
     description: 'Gateway de pagamentos PIX',
     endpoints: {
-      orders: '/api/orders'
+      orders: '/api/orders',
+      products: '/api/products',
+      offers: '/api/offers',
+      orderbumps: '/api/orderbumps',
+      domains: '/api/domains',
+      integrations: '/api/integrations',
+      auth: '/auth/session',
+      webhooks: '/webhooks/pix/payment'
     }
   });
 });
