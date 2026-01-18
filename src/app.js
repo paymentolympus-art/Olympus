@@ -27,9 +27,34 @@ const app = express();
 // ========================================
 
 // CORS - Permitir requisições do frontend
+const allowedOrigins = [
+  process.env.FRONTEND_URL,
+  'https://olympus-frontend-swart.vercel.app',
+  'http://localhost:8080',
+  'http://localhost:5173'
+].filter(Boolean); // Remove valores undefined/null
+
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:8080', // Frontend na porta 8080
-  credentials: true
+  origin: function (origin, callback) {
+    // Permite requisições sem origin (mobile apps, Postman, etc.)
+    if (!origin) return callback(null, true);
+    
+    // Verifica se a origin está na lista permitida
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      // Em desenvolvimento, permite qualquer origin
+      if (process.env.NODE_ENV !== 'production') {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+  exposedHeaders: ['Content-Range', 'X-Content-Range']
 }));
 
 // IMPORTANTE: Webhooks precisam de raw body para validação de assinatura
