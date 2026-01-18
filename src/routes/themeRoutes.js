@@ -4,7 +4,11 @@ import {
   updateCheckoutTheme,
   uploadAsset,
   removeAsset,
-  getUserThemes
+  getUserThemes,
+  getSocialProofs,
+  createSocialProof,
+  updateSocialProof,
+  deleteSocialProof
 } from '../controllers/themeController.js';
 import { authenticate } from '../middlewares/auth.js';
 
@@ -58,6 +62,34 @@ router.post('/:productId/assets/:assetType', authenticate, uploadAssetMiddleware
  * @access  Private
  */
 router.delete('/:productId/assets/:assetType', authenticate, removeAsset);
+
+/**
+ * @route   GET /theme/:productId/social-proofs
+ * @desc    Listar social proofs de um produto
+ * @access  Private
+ */
+router.get('/:productId/social-proofs', authenticate, getSocialProofs);
+
+/**
+ * @route   POST /theme/:productId/social-proofs
+ * @desc    Criar social proof
+ * @access  Private
+ */
+router.post('/:productId/social-proofs', authenticate, uploadAssetMiddleware, createSocialProof);
+
+/**
+ * @route   PUT /theme/:productId/social-proofs/:proofId
+ * @desc    Atualizar social proof
+ * @access  Private
+ */
+router.put('/:productId/social-proofs/:proofId', authenticate, uploadAssetMiddleware, updateSocialProof);
+
+/**
+ * @route   DELETE /theme/:productId/social-proofs/:proofId
+ * @desc    Deletar social proof
+ * @access  Private
+ */
+router.delete('/:productId/social-proofs/:proofId', authenticate, deleteSocialProof);
 
 export default router;
 

@@ -501,3 +501,285 @@ export const removeAsset = async (req, res, next) => {
   }
 };
 
+/**
+ * @desc    Listar social proofs de um produto
+ * @route   GET /theme/:productId/social-proofs
+ * @access  Private
+ */
+export const getSocialProofs = async (req, res, next) => {
+  try {
+    const { productId } = req.params;
+    const userId = req.user._id;
+
+    // Verificar se produto existe e pertence ao usuário
+    const product = await Product.findOne({ _id: productId, userId });
+    if (!product) {
+      return next(errorHandler(404, 'Produto não encontrado', 'Produto não foi encontrado ou você não tem permissão'));
+    }
+
+    // Buscar tema
+    const checkoutTheme = await CheckoutTheme.findOne({ productId, userId });
+
+    if (!checkoutTheme) {
+      // Se não tem tema ainda, retornar array vazio
+      return res.status(200).json({
+        data: []
+      });
+    }
+
+    res.status(200).json({
+      data: checkoutTheme.socialProofs || []
+    });
+
+  } catch (error) {
+    console.error('❌ Erro ao buscar social proofs:', error);
+    next(errorHandler(500, 'Erro interno do servidor', error.message));
+  }
+};
+
+/**
+ * @desc    Criar social proof
+ * @route   POST /theme/:productId/social-proofs
+ * @access  Private
+ */
+export const createSocialProof = async (req, res, next) => {
+  try {
+    const { productId } = req.params;
+    const userId = req.user._id;
+    const { text, name, rating } = req.body;
+
+    // Verificar se produto existe e pertence ao usuário
+    const product = await Product.findOne({ _id: productId, userId });
+    if (!product) {
+      return next(errorHandler(404, 'Produto não encontrado', 'Produto não foi encontrado ou você não tem permissão'));
+    }
+
+    // Buscar ou criar tema
+    let checkoutTheme = await CheckoutTheme.findOne({ productId, userId });
+
+    if (!checkoutTheme) {
+      checkoutTheme = new CheckoutTheme({
+        productId,
+        userId
+      });
+    }
+
+    // Upload de imagem (se fornecida)
+    const isVercel = process.env.VERCEL === '1' || !process.env.BACKEND_URL?.includes('localhost');
+    let imageUrl = '';
+
+    if (req.file) {
+      if (isVercel && process.env.BLOB_READ_WRITE_TOKEN) {
+        // PRODUÇÃO: Usar Vercel Blob Storage
+        try {
+          imageUrl = await uploadToVercelBlob(
+            req.file.buffer,
+            req.file.originalname,
+            'social-proofs'
+          );
+          console.log(`✅ Imagem de social proof enviada para Vercel Blob: ${imageUrl}`);
+        } catch (blobError) {
+          console.error('❌ Erro ao fazer upload para Vercel Blob:', blobError);
+          return next(errorHandler(500, 'Erro ao fazer upload da imagem', blobError.message));
+        }
+      } else {
+        // DESENVOLVIMENTO LOCAL: Usar sistema de arquivos
+        const backendUrl = process.env.BACKEND_URL || `http://localhost:${process.env.PORT || 3000}`;
+        imageUrl = `${backendUrl}/uploads/${req.file.filename}`;
+      }
+    }
+
+    // Criar novo social proof
+    const newProof = {
+      id: new Date().getTime().toString(), // ID único baseado em timestamp
+      image: imageUrl,
+      rating: rating || 5,
+      name: name || '',
+      text: text || ''
+    };
+
+    // Adicionar ao array
+    if (!checkoutTheme.socialProofs) {
+      checkoutTheme.socialProofs = [];
+    }
+    checkoutTheme.socialProofs.push(newProof);
+
+    await checkoutTheme.save();
+
+    console.log(`✅ Social proof criado: ${productId}`);
+
+    res.status(201).json({
+      data: newProof
+    });
+
+  } catch (error) {
+    console.error('❌ Erro ao criar social proof:', error);
+    next(errorHandler(500, 'Erro interno do servidor', error.message));
+  }
+};
+
+/**
+ * @desc    Atualizar social proof
+ * @route   PUT /theme/:productId/social-proofs/:proofId
+ * @access  Private
+ */
+export const updateSocialProof = async (req, res, next) => {
+  try {
+    const { productId, proofId } = req.params;
+    const userId = req.user._id;
+    const { text, name, rating } = req.body;
+
+    // Verificar se produto existe e pertence ao usuário
+    const product = await Product.findOne({ _id: productId, userId });
+    if (!product) {
+      return next(errorHandler(404, 'Produto não encontrado', 'Produto não foi encontrado ou você não tem permissão'));
+    }
+
+    // Buscar tema
+    const checkoutTheme = await CheckoutTheme.findOne({ productId, userId });
+
+    if (!checkoutTheme) {
+      return next(errorHandler(404, 'Tema não encontrado', 'Tema do checkout não foi encontrado'));
+    }
+
+    // Encontrar social proof
+    const proofIndex = checkoutTheme.socialProofs.findIndex(p => p.id === proofId);
+
+    if (proofIndex === -1) {
+      return next(errorHandler(404, 'Social proof não encontrado', 'A prova social não foi encontrada'));
+    }
+
+    const currentProof = checkoutTheme.socialProofs[proofIndex];
+
+    // Upload de nova imagem (se fornecida)
+    const isVercel = process.env.VERCEL === '1' || !process.env.BACKEND_URL?.includes('localhost');
+    
+    if (req.file) {
+      let newImageUrl;
+      
+      if (isVercel && process.env.BLOB_READ_WRITE_TOKEN) {
+        // PRODUÇÃO: Usar Vercel Blob Storage
+        try {
+          newImageUrl = await uploadToVercelBlob(
+            req.file.buffer,
+            req.file.originalname,
+            'social-proofs'
+          );
+          console.log(`✅ Nova imagem de social proof enviada para Vercel Blob: ${newImageUrl}`);
+        } catch (blobError) {
+          console.error('❌ Erro ao fazer upload para Vercel Blob:', blobError);
+          return next(errorHandler(500, 'Erro ao fazer upload da imagem', blobError.message));
+        }
+      } else {
+        // DESENVOLVIMENTO LOCAL: Usar sistema de arquivos
+        const backendUrl = process.env.BACKEND_URL || `http://localhost:${process.env.PORT || 3000}`;
+        newImageUrl = `${backendUrl}/uploads/${req.file.filename}`;
+
+        // Remover imagem antiga se existir
+        if (currentProof.image && currentProof.image.startsWith('/uploads/')) {
+          try {
+            const fs = await import('fs');
+            const path = await import('path');
+            const { fileURLToPath } = await import('url');
+            const __filename = fileURLToPath(import.meta.url);
+            const __dirname = path.dirname(__filename);
+            const oldImagePath = path.join(__dirname, '../../', currentProof.image);
+            if (fs.existsSync(oldImagePath)) {
+              fs.unlinkSync(oldImagePath);
+            }
+          } catch (err) {
+            console.warn('⚠️  Erro ao remover imagem antiga:', err.message);
+          }
+        }
+      }
+
+      currentProof.image = newImageUrl;
+    }
+
+    // Atualizar campos
+    if (text !== undefined) currentProof.text = text;
+    if (name !== undefined) currentProof.name = name;
+    if (rating !== undefined) currentProof.rating = rating;
+
+    checkoutTheme.socialProofs[proofIndex] = currentProof;
+    await checkoutTheme.save();
+
+    console.log(`✅ Social proof atualizado: ${proofId}`);
+
+    res.status(200).json({
+      data: currentProof
+    });
+
+  } catch (error) {
+    console.error('❌ Erro ao atualizar social proof:', error);
+    next(errorHandler(500, 'Erro interno do servidor', error.message));
+  }
+};
+
+/**
+ * @desc    Deletar social proof
+ * @route   DELETE /theme/:productId/social-proofs/:proofId
+ * @access  Private
+ */
+export const deleteSocialProof = async (req, res, next) => {
+  try {
+    const { productId, proofId } = req.params;
+    const userId = req.user._id;
+
+    // Verificar se produto existe e pertence ao usuário
+    const product = await Product.findOne({ _id: productId, userId });
+    if (!product) {
+      return next(errorHandler(404, 'Produto não encontrado', 'Produto não foi encontrado ou você não tem permissão'));
+    }
+
+    // Buscar tema
+    const checkoutTheme = await CheckoutTheme.findOne({ productId, userId });
+
+    if (!checkoutTheme) {
+      return next(errorHandler(404, 'Tema não encontrado', 'Tema do checkout não foi encontrado'));
+    }
+
+    // Encontrar social proof
+    const proofIndex = checkoutTheme.socialProofs.findIndex(p => p.id === proofId);
+
+    if (proofIndex === -1) {
+      return next(errorHandler(404, 'Social proof não encontrado', 'A prova social não foi encontrada'));
+    }
+
+    const proofToRemove = checkoutTheme.socialProofs[proofIndex];
+
+    // Remover imagem do filesystem se existir (apenas em local)
+    const isVercel = process.env.VERCEL === '1' || !process.env.BACKEND_URL?.includes('localhost');
+    
+    if (!isVercel && proofToRemove.image && proofToRemove.image.startsWith('/uploads/')) {
+      try {
+        const fs = await import('fs');
+        const path = await import('path');
+        const { fileURLToPath } = await import('url');
+        const __filename = fileURLToPath(import.meta.url);
+        const __dirname = path.dirname(__filename);
+        const imagePath = path.join(__dirname, '../../', proofToRemove.image);
+        if (fs.existsSync(imagePath)) {
+          fs.unlinkSync(imagePath);
+        }
+      } catch (err) {
+        console.warn('⚠️  Erro ao remover arquivo:', err.message);
+      }
+    }
+
+    // Remover do array
+    checkoutTheme.socialProofs.splice(proofIndex, 1);
+    await checkoutTheme.save();
+
+    console.log(`🗑️ Social proof deletado: ${proofId}`);
+
+    res.status(200).json({
+      message: 'Prova social removida com sucesso'
+    });
+
+  } catch (error) {
+    console.error('❌ Erro ao deletar social proof:', error);
+    next(errorHandler(500, 'Erro interno do servidor', error.message));
+  }
+};
+
