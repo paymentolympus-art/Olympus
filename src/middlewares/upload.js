@@ -48,3 +48,6 @@ export const upload = multer({
 // Middleware para upload de imagem de produto
 export const uploadProductImage = upload.single('image');
 
+// Middleware para upload de imagem de orderbump
+export const uploadOrderbumpImage = upload.single('image');
+
