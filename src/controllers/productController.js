@@ -555,6 +555,76 @@ export const updateProduct = async (req, res, next) => {
 };
 
 /**
+ * @desc    Ativar produtos pendentes que já têm oferta padrão
+ * @route   POST /api/products/activate-pending
+ * @access  Private
+ */
+export const activatePendingProducts = async (req, res, next) => {
+  try {
+    const userId = req.user._id;
+
+    // Buscar produtos pendentes do usuário
+    const pendingProducts = await Product.find({ userId, status: 'PENDING' }).lean();
+
+    const activated = [];
+    const failed = [];
+
+    for (const product of pendingProducts) {
+      try {
+        // Validar requisitos
+        const errors = [];
+
+        if (!product.name || product.name.length < 3) {
+          errors.push(`Produto ${product.name}: Nome inválido`);
+          continue;
+        }
+
+        if (!product.price || product.price <= 0) {
+          errors.push(`Produto ${product.name}: Preço inválido`);
+          continue;
+        }
+
+        // Verificar se tem oferta padrão
+        const defaultOffer = await Offer.findOne({ productId: product._id, userId, isDefault: true });
+        if (!defaultOffer) {
+          continue; // Não tem oferta padrão, pular
+        }
+
+        // Ativar produto
+        await Product.updateOne({ _id: product._id }, { status: 'ACTIVE' });
+        activated.push({
+          id: product._id.toString(),
+          name: product.name
+        });
+
+        console.log(`✅ Produto ativado: ${product._id} - ${product.name}`);
+
+      } catch (error) {
+        failed.push({
+          id: product._id.toString(),
+          name: product.name,
+          error: error.message
+        });
+      }
+    }
+
+    res.status(200).json({
+      data: {
+        activated: activated.length,
+        failed: failed.length,
+        products: activated,
+        errors: failed,
+        message: `${activated.length} produto(s) ativado(s) com sucesso`
+      }
+    });
+
+  } catch (error) {
+    console.error('❌ Erro ao ativar produtos pendentes:', error);
+    next(errorHandler(500, 'Erro interno do servidor', error.message));
+  }
+};
+
+/**
  * @desc    Deletar produto
  * @route   DELETE /api/products/:id
  * @access  Private (requer autenticação)

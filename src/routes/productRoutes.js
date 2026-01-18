@@ -9,7 +9,8 @@ import {
   removeProductImage,
   activateProduct,
   updateProductStatus,
-  validateProduct
+  validateProduct,
+  activatePendingProducts
 } from '../controllers/productController.js';
 import { authenticate } from '../middlewares/auth.js'; // Middleware de autenticação
 import { validate, createProductSchema, updateProductSchema } from '../middlewares/validation.js';
@@ -88,6 +89,13 @@ router.patch('/:id/status', authenticate, updateProductStatus);
  * @access  Private
  */
 router.get('/:id/validation', authenticate, validateProduct);
+
+/**
+ * @route   POST /api/products/activate-pending
+ * @desc    Ativar todos produtos pendentes que já têm oferta padrão
+ * @access  Private
+ */
+router.post('/activate-pending', authenticate, activatePendingProducts);
 
 /**
  * @route   DELETE /api/products/:id
