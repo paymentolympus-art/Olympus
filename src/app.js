@@ -27,9 +27,33 @@ const app = express();
 // ========================================
 
 // CORS - Permitir requisições do frontend
-// Configuração simplificada e funcional para Vercel
+// Lista de origens permitidas
+const allowedOrigins = [
+  'https://olympuspayment.com.br',
+  'https://www.olympuspayment.com.br',
+  'https://olympus-frontend-swart.vercel.app',
+  'http://localhost:8080',
+  'http://localhost:5173',
+  process.env.FRONTEND_URL
+].filter(Boolean);
+
 app.use(cors({
-  origin: '*', // Permitir todas as origens temporariamente para debug
+  origin: function (origin, callback) {
+    // Permitir requisições sem origin (mobile apps, Postman, curl, etc.)
+    if (!origin) {
+      return callback(null, true);
+    }
+    // Verificar se a origin está na lista
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, origin);
+    }
+    // Em desenvolvimento, permitir qualquer origin
+    if (process.env.NODE_ENV !== 'production') {
+      return callback(null, origin);
+    }
+    // Bloquear outras origens
+    return callback(new Error('Not allowed by CORS'), false);
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin'],
