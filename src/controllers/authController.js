@@ -395,14 +395,18 @@ export const getUserAwards = async (req, res, next) => {
  */
 export const getUserMetrics = async (req, res, next) => {
   try {
-    // Por enquanto, retorna dados mock
+    // Por enquanto, retorna dados mock no formato esperado pelo frontend
     // Futuramente, implementar lógica real de métricas
     res.status(200).json({
       data: {
-        totalSales: 0,
-        totalRevenue: 0,
-        totalProducts: 0,
-        totalVisitors: 0
+        balance: {
+          available: 0,
+          pending: 0
+        },
+        averageTicket: 0,
+        activeVisits: 0,
+        pixSalesPercentage: 0,
+        salesPerVisitor: 0
       }
     });
 
@@ -421,12 +425,34 @@ export const getUserAnalyticsChart = async (req, res, next) => {
   try {
     const { period = '30_DAYS' } = req.query;
 
-    // Por enquanto, retorna dados mock
-    // Futuramente, implementar lógica real de analytics
+    // Calcular datas baseado no período
+    const now = new Date();
+    let days = 30;
+    if (period === '7_DAYS') days = 7;
+    else if (period === '3_MONTHS') days = 90;
+
+    const startDate = new Date(now);
+    startDate.setDate(startDate.getDate() - days);
+
+    // Gerar dados mock para o gráfico
+    const chartData = [];
+    for (let i = 0; i < days; i++) {
+      const date = new Date(startDate);
+      date.setDate(date.getDate() + i);
+      chartData.push({
+        date: date.toISOString().split('T')[0],
+        sales: 0,
+        visitors: 0
+      });
+    }
+
     res.status(200).json({
       data: {
-        labels: [],
-        datasets: []
+        chartData,
+        period,
+        days,
+        startDate: startDate.toISOString().split('T')[0],
+        endDate: now.toISOString().split('T')[0]
       }
     });
 
