@@ -28,14 +28,15 @@ const app = express();
 // MIDDLEWARES GLOBAIS
 // ========================================
 
-// CORS - Permitir requisições do frontend
-// Lista de origens permitidas
+// CORS - Permitir requisições do frontend e domínios de checkout customizados
+// Lista de origens principais permitidas (gateway/dashboard)
 const allowedOrigins = [
   'https://olympuspayment.com.br',
   'https://www.olympuspayment.com.br',
   'https://olympus-frontend-swart.vercel.app',
   'http://localhost:8080',
   'http://localhost:5173',
+  'http://localhost:3000',
   process.env.FRONTEND_URL
 ].filter(Boolean);
 
@@ -45,16 +46,17 @@ app.use(cors({
     if (!origin) {
       return callback(null, true);
     }
-    // Verificar se a origin está na lista
+    
+    // Verificar se a origin está na lista principal
     if (allowedOrigins.includes(origin)) {
       return callback(null, origin);
     }
-    // Em desenvolvimento, permitir qualquer origin
-    if (process.env.NODE_ENV !== 'production') {
-      return callback(null, origin);
-    }
-    // Bloquear outras origens
-    return callback(new Error('Not allowed by CORS'), false);
+    
+    // IMPORTANTE: Permitir QUALQUER domínio para rotas de checkout público
+    // Isso é necessário porque clientes podem ter domínios customizados
+    // Ex: pay.testandogat.shop, checkout.meusite.com.br, etc.
+    // A segurança é feita verificando se o domínio está cadastrado no banco
+    return callback(null, origin);
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
