@@ -144,7 +144,7 @@ export const getDomainById = async (req, res, next) => {
       cnames: domain.cnameName && domain.name ? {
         type: domain.cnameType || 'CNAME',
         name: domain.cnameName || 'pay',
-        value: domain.cnameValue || 'checkout.insanepay.com.br',
+        value: domain.cnameValue || 'checkout.olympuspayment.com.br',
         full: `${domain.cnameName || 'pay'}.${domain.name}`
       } : null,
       productDomain: productDomains.map(pd => ({
@@ -546,7 +546,7 @@ export const associateProducts = async (req, res, next) => {
       status: updatedDomain.status,
       cnameType: updatedDomain.cnameType || 'CNAME',
       cnameName: updatedDomain.cnameName || 'pay',
-      cnameValue: updatedDomain.cnameValue || 'checkout.insanepay.com.br'
+      cnameValue: updatedDomain.cnameValue || 'checkout.olympuspayment.com.br'
     };
 
     res.status(200).json({
@@ -622,7 +622,7 @@ export const addProductToDomain = async (req, res, next) => {
       status: updatedDomain.status,
       cnameType: updatedDomain.cnameType || 'CNAME',
       cnameName: updatedDomain.cnameName || 'pay',
-      cnameValue: updatedDomain.cnameValue || 'checkout.insanepay.com.br'
+      cnameValue: updatedDomain.cnameValue || 'checkout.olympuspayment.com.br'
     };
 
     res.status(200).json({
@@ -694,7 +694,7 @@ export const removeProductFromDomain = async (req, res, next) => {
       status: updatedDomain.status,
       cnameType: updatedDomain.cnameType || 'CNAME',
       cnameName: updatedDomain.cnameName || 'pay',
-      cnameValue: updatedDomain.cnameValue || 'checkout.insanepay.com.br'
+      cnameValue: updatedDomain.cnameValue || 'checkout.olympuspayment.com.br'
     };
 
     res.status(200).json({
