@@ -140,7 +140,7 @@ export const getDomainById = async (req, res, next) => {
       status: domain.status,
       cnameType: domain.cnameType || 'CNAME',
       cnameName: domain.cnameName || 'pay',
-      cnameValue: domain.cnameValue || 'checkout.insanepay.com.br',
+      cnameValue: domain.cnameValue || 'checkout.olympuspayment.com.br',
       cnames: domain.cnameName && domain.name ? {
         type: domain.cnameType || 'CNAME',
         name: domain.cnameName || 'pay',
