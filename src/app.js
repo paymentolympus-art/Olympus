@@ -180,6 +180,57 @@ app.use('/api/domains', domainRoutes); // Rotas de domínios
 app.use('/theme', themeRoutes); // Rotas de tema de checkout
 app.use('/checkout', publicCheckoutRoutes); // Rotas de checkout público
 
+// Rota especial: Checkout na raiz para domínios customizados
+// Quando alguém acessa pay.seudominio.com.br/slug, serve o checkout diretamente
+import { getPublicCheckout } from './controllers/publicCheckoutController.js';
+import Domain from './models/Domain.js';
+
+app.get('/:slug', async (req, res, next) => {
+  try {
+    const host = req.headers.host || req.headers['x-forwarded-host'] || '';
+    const { slug } = req.params;
+    
+    // Ignorar rotas conhecidas da API
+    const apiRoutes = ['api', 'webhooks', 'theme', 'checkout', 'auth', 'user', 'health', 'uploads'];
+    if (apiRoutes.includes(slug)) {
+      return next(); // Passar para o próximo middleware (404)
+    }
+    
+    // Verificar se é um domínio de checkout (não é o domínio principal da API)
+    const isMainDomain = host.includes('olympus-payment.vercel.app') || 
+                        host.includes('localhost') ||
+                        host === 'olympuspayment.com.br' ||
+                        host === 'www.olympuspayment.com.br';
+    
+    // Se for domínio principal, não servir checkout na raiz
+    if (isMainDomain) {
+      return next(); // Passar para 404
+    }
+    
+    // Verificar se o domínio está cadastrado no sistema (opcional, para segurança)
+    // Extrair domínio principal do host (ex: pay.testandogat.shop -> testandogat.shop)
+    const hostParts = host.split('.');
+    if (hostParts.length >= 2) {
+      const mainDomain = hostParts.slice(-2).join('.'); // pega últimos 2 (ex: testandogat.shop)
+      const subdomain = hostParts.slice(0, -2).join('.'); // pega o resto (ex: pay)
+      
+      // Buscar domínio no banco (opcional - pode comentar para melhor performance)
+      // const domain = await Domain.findOne({ name: mainDomain, cnameName: subdomain, status: 'VERIFIED' });
+      // if (!domain) {
+      //   return next(); // Domínio não verificado, passar para 404
+      // }
+    }
+    
+    // Se chegou aqui, é provavelmente um domínio de checkout
+    // Chamar o controller de checkout
+    return getPublicCheckout(req, res, next);
+    
+  } catch (error) {
+    // Em caso de erro, passar para o próximo middleware
+    next();
+  }
+});
+
 // Rotas de Webhooks (antes do 404)
 app.use('/webhooks', webhookRoutes);
 
