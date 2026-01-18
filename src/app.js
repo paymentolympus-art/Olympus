@@ -29,6 +29,8 @@ const app = express();
 // CORS - Permitir requisições do frontend
 const allowedOrigins = [
   process.env.FRONTEND_URL,
+  'https://olympuspayment.com.br',
+  'https://www.olympuspayment.com.br',
   'https://olympus-frontend-swart.vercel.app',
   'http://localhost:8080',
   'http://localhost:5173'
