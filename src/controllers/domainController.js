@@ -64,11 +64,11 @@ export const getDomains = async (req, res, next) => {
         status: domain.status,
         cnameType: domain.cnameType || 'CNAME',
         cnameName: domain.cnameName || 'pay',
-        cnameValue: domain.cnameValue || 'checkout.insanepay.com.br',
+        cnameValue: domain.cnameValue || 'checkout.olympuspayment.com.br',
         cnames: domain.cnameName && domain.name ? {
           type: domain.cnameType || 'CNAME',
           name: domain.cnameName || 'pay',
-          value: domain.cnameValue || 'checkout.insanepay.com.br',
+          value: domain.cnameValue || 'checkout.olympuspayment.com.br',
           full: `${domain.cnameName || 'pay'}.${domain.name}`
         } : null,
         productDomain: domainProductDomains.map(pd => ({
@@ -214,7 +214,7 @@ export const createDomain = async (req, res, next) => {
       status: 'PENDING',
       cnameType: 'CNAME',
       cnameName: 'pay',
-      cnameValue: process.env.DOMAIN_CNAME_VALUE || 'checkout.insanepay.com.br'
+      cnameValue: process.env.DOMAIN_CNAME_VALUE || 'checkout.olympuspayment.com.br'
     });
 
     await domain.save();
@@ -375,7 +375,7 @@ export const verifyDomain = async (req, res, next) => {
     }
 
     const subdomain = `${domain.cnameName || 'pay'}.${domain.name}`;
-    const expectedValue = domain.cnameValue || process.env.DOMAIN_CNAME_VALUE || 'checkout.insanepay.com.br';
+    const expectedValue = domain.cnameValue || process.env.DOMAIN_CNAME_VALUE || 'checkout.olympuspayment.com.br';
 
     let isConfigured = false;
     let dnsRecords = null;
@@ -465,11 +465,11 @@ export const getDomainsByProduct = async (req, res, next) => {
           status: domain.status,
           cnameType: domain.cnameType || 'CNAME',
           cnameName: domain.cnameName || 'pay',
-          cnameValue: domain.cnameValue || 'checkout.insanepay.com.br',
+          cnameValue: domain.cnameValue || 'checkout.olympuspayment.com.br',
           cnames: domain.cnameName && domain.name ? {
             type: domain.cnameType || 'CNAME',
             name: domain.cnameName || 'pay',
-            value: domain.cnameValue || 'checkout.insanepay.com.br',
+            value: domain.cnameValue || 'checkout.olympuspayment.com.br',
             full: `${domain.cnameName || 'pay'}.${domain.name}`
           } : null,
           createdAt: pd.createdAt

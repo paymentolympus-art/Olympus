@@ -41,7 +41,7 @@ const domainSchema = new mongoose.Schema({
   },
   cnameValue: {
     type: String,
-    default: 'checkout.insanepay.com.br',
+    default: 'checkout.olympuspayment.com.br',
     trim: true
   },
   // Dados de verificação DNS
