@@ -8,7 +8,14 @@ import {
   removeOrderbumpImage
 } from '../controllers/orderbumpController.js';
 import { authenticate } from '../middlewares/auth.js';
-import { uploadProductImage as uploadMiddleware } from '../middlewares/upload.js';
+// Usar upload apropriado conforme ambiente (Vercel ou local)
+import { uploadOrderbumpImage as uploadOrderbumpImageVercel } from '../middlewares/uploadVercel.js';
+import { uploadOrderbumpImage as uploadOrderbumpImageLocal } from '../middlewares/upload.js';
+
+// Escolher middleware baseado no ambiente
+const uploadMiddleware = process.env.VERCEL === '1' || process.env.BLOB_READ_WRITE_TOKEN
+  ? uploadOrderbumpImageVercel
+  : uploadOrderbumpImageLocal;
 
 const router = express.Router();
 

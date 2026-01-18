@@ -10,7 +10,14 @@ import {
 } from '../controllers/productController.js';
 import { authenticate } from '../middlewares/auth.js'; // Middleware de autenticação
 import { validate, createProductSchema, updateProductSchema } from '../middlewares/validation.js';
-import { uploadProductImage as uploadMiddleware } from '../middlewares/upload.js';
+// Usar upload apropriado conforme ambiente (Vercel ou local)
+import { uploadProductImage as uploadProductImageVercel } from '../middlewares/uploadVercel.js';
+import { uploadProductImage as uploadProductImageLocal } from '../middlewares/upload.js';
+
+// Escolher middleware baseado no ambiente
+const uploadMiddleware = process.env.VERCEL === '1' || process.env.BLOB_READ_WRITE_TOKEN
+  ? uploadProductImageVercel
+  : uploadProductImageLocal;
 import { getOrderbumpAvailable } from '../controllers/orderbumpController.js';
 
 const router = express.Router();
