@@ -66,6 +66,7 @@ app.use('/uploads', express.static(join(__dirname, '../uploads')));
 
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/insane-pay';
 
+// Conectar ao MongoDB sem encerrar o processo em caso de erro
 mongoose.connect(MONGODB_URI)
   .then(() => {
     console.log('✅ MongoDB conectado com sucesso!');
@@ -73,7 +74,8 @@ mongoose.connect(MONGODB_URI)
   })
   .catch((error) => {
     console.error('❌ Erro ao conectar com MongoDB:', error.message);
-    process.exit(1); // Encerra o processo se não conseguir conectar
+    console.error('⚠️  API continuará funcionando, mas operações de banco falharão');
+    // NÃO encerrar processo na Vercel - deixar API responder com erros apropriados
   });
 
 // Event listeners para MongoDB
