@@ -389,6 +389,75 @@ export const getUserAwards = async (req, res, next) => {
 };
 
 /**
+ * @desc    Buscar métricas do usuário
+ * @route   GET /user/me/metrics
+ * @access  Private
+ */
+export const getUserMetrics = async (req, res, next) => {
+  try {
+    // Por enquanto, retorna dados mock
+    // Futuramente, implementar lógica real de métricas
+    res.status(200).json({
+      data: {
+        totalSales: 0,
+        totalRevenue: 0,
+        totalProducts: 0,
+        totalVisitors: 0
+      }
+    });
+
+  } catch (error) {
+    console.error('❌ Erro ao buscar métricas:', error);
+    next(errorHandler(500, 'Erro interno do servidor', error.message));
+  }
+};
+
+/**
+ * @desc    Buscar gráfico de analytics
+ * @route   GET /user/me/analytics/chart
+ * @access  Private
+ */
+export const getUserAnalyticsChart = async (req, res, next) => {
+  try {
+    const { period = '30_DAYS' } = req.query;
+
+    // Por enquanto, retorna dados mock
+    // Futuramente, implementar lógica real de analytics
+    res.status(200).json({
+      data: {
+        labels: [],
+        datasets: []
+      }
+    });
+
+  } catch (error) {
+    console.error('❌ Erro ao buscar analytics:', error);
+    next(errorHandler(500, 'Erro interno do servidor', error.message));
+  }
+};
+
+/**
+ * @desc    Buscar documentos do usuário
+ * @route   GET /user/me/documents
+ * @access  Private
+ */
+export const getUserDocuments = async (req, res, next) => {
+  try {
+    // Por enquanto, retorna array vazio
+    // Futuramente, implementar lógica de documentos
+    res.status(200).json({
+      data: {
+        documents: []
+      }
+    });
+
+  } catch (error) {
+    console.error('❌ Erro ao buscar documentos:', error);
+    next(errorHandler(500, 'Erro interno do servidor', error.message));
+  }
+};
+
+/**
  * @desc    Buscar dados do usuário logado
  * @route   GET /user/me
  * @access  Private (requer autenticação)
