@@ -13,6 +13,7 @@ import integrationRoutes from './routes/integrationRoutes.js';
 import orderbumpRoutes from './routes/orderbumpRoutes.js';
 import domainRoutes from './routes/domainRoutes.js';
 import themeRoutes from './routes/themeRoutes.js';
+import publicCheckoutRoutes from './routes/publicCheckoutRoutes.js';
 
 // Importar middleware de tratamento de erros
 import { errorHandler } from './middlewares/errorHandler.js';
@@ -177,6 +178,7 @@ app.use('/api/integrations', integrationRoutes); // Rotas de integrações (rela
 app.use('/api/orderbumps', orderbumpRoutes); // Rotas de orderbumps
 app.use('/api/domains', domainRoutes); // Rotas de domínios
 app.use('/theme', themeRoutes); // Rotas de tema de checkout
+app.use('/checkout', publicCheckoutRoutes); // Rotas de checkout público
 
 // Rotas de Webhooks (antes do 404)
 app.use('/webhooks', webhookRoutes);
