@@ -28,6 +28,13 @@ export const getPublicCheckout = async (req, res, next) => {
     // Buscar oferta pelo slug
     const offer = await Offer.findOne({ slug }).lean();
 
+    console.log(`   Oferta encontrada: ${offer ? 'SIM' : 'NÃO'}`);
+    if (offer) {
+      console.log(`   Oferta ID: ${offer._id}`);
+      console.log(`   Oferta productId: ${offer.productId}`);
+      console.log(`   Oferta userId: ${offer.userId}`);
+    }
+
     if (!offer) {
       return res.status(404).json({
         error: 'Oferta não encontrada',
@@ -40,12 +47,28 @@ export const getPublicCheckout = async (req, res, next) => {
     const userId = offer.userId;
 
     // Buscar produto
+    console.log(`   Buscando produto com ID: ${productId}`);
     const product = await Product.findOne({ _id: productId }).lean();
 
+    console.log(`   Produto encontrado: ${product ? 'SIM' : 'NÃO'}`);
+    if (product) {
+      console.log(`   Produto nome: ${product.name}`);
+      console.log(`   Produto status: ${product.status}`);
+    }
+
     if (!product) {
+      // Tentar buscar todas as ofertas para debug
+      const allOffers = await Offer.find({ slug }).lean();
+      console.log(`   Todas ofertas com slug '${slug}':`, allOffers.length);
+      
       return res.status(404).json({
         error: 'Produto não encontrado',
-        message: 'O produto desta oferta não existe ou foi removido'
+        message: 'O produto desta oferta não existe ou foi removido',
+        debug: {
+          offerId: offer._id,
+          productId: offer.productId,
+          slug: offer.slug
+        }
       });
     }
 
