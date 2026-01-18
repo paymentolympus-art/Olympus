@@ -27,53 +27,9 @@ const app = express();
 // ========================================
 
 // CORS - Permitir requisições do frontend
-const allowedOrigins = [
-  process.env.FRONTEND_URL,
-  'https://olympuspayment.com.br',
-  'https://www.olympuspayment.com.br',
-  'https://olympus-frontend-swart.vercel.app',
-  'http://localhost:8080',
-  'http://localhost:5173'
-].filter(Boolean); // Remove valores undefined/null
-
-// Função para verificar se origin é permitida
-const isOriginAllowed = (origin) => {
-  if (!origin) return true; // Permite requisições sem origin
-  if (allowedOrigins.includes(origin)) return true;
-  // Em desenvolvimento, permite qualquer origin
-  if (process.env.NODE_ENV !== 'production') return true;
-  return false;
-};
-
-// Middleware CORS personalizado para garantir funcionamento na Vercel
-app.use((req, res, next) => {
-  const origin = req.headers.origin;
-  
-  if (isOriginAllowed(origin)) {
-    res.setHeader('Access-Control-Allow-Origin', origin || '*');
-    res.setHeader('Access-Control-Allow-Credentials', 'true');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept, Origin');
-    res.setHeader('Access-Control-Expose-Headers', 'Content-Range, X-Content-Range');
-  }
-  
-  // Responder imediatamente a requisições OPTIONS (preflight)
-  if (req.method === 'OPTIONS') {
-    return res.status(204).end();
-  }
-  
-  next();
-});
-
-// Também usar cors do express como fallback
+// Configuração simplificada e funcional para Vercel
 app.use(cors({
-  origin: function (origin, callback) {
-    if (isOriginAllowed(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
+  origin: '*', // Permitir todas as origens temporariamente para debug
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin'],
