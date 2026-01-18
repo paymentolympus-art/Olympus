@@ -1,5 +1,13 @@
 import express from 'express';
-import { loginUser, registerUser, getUserMe, getUserAwards } from '../controllers/authController.js';
+import { 
+  loginUser, 
+  registerUser, 
+  getUserMe, 
+  getUserAwards,
+  getUserMetrics,
+  getUserAnalyticsChart,
+  getUserDocuments
+} from '../controllers/authController.js';
 import { validate, loginSchema, registerUserSchema } from '../middlewares/validation.js';
 import { authenticate } from '../middlewares/auth.js';
 
@@ -102,6 +110,9 @@ router.post('/create', validate(registerUserSchema), registerUser);
  */
 router.get('/me', authenticate, getUserMe);
 router.get('/me/awards', authenticate, getUserAwards);
+router.get('/me/metrics', authenticate, getUserMetrics);
+router.get('/me/analytics/chart', authenticate, getUserAnalyticsChart);
+router.get('/me/documents', authenticate, getUserDocuments);
 
 export default router;
 
