@@ -3,6 +3,52 @@ import Product from '../models/Product.js';
 import { errorHandler } from '../middlewares/errorHandler.js';
 
 /**
+ * Função auxiliar: Tenta ativar produto automaticamente
+ * Verifica se todos os requisitos estão atendidos e ativa o produto
+ */
+async function tryActivateProduct(productId, userId) {
+  try {
+    const product = await Product.findOne({ _id: productId, userId });
+    if (!product) return false;
+
+    // Se já está ativo, não precisa fazer nada
+    if (product.status === 'ACTIVE') return false;
+
+    // Validar requisitos
+    const errors = [];
+
+    // Validar nome
+    if (!product.name || product.name.length < 3) {
+      errors.push('Nome do produto deve ter pelo menos 3 caracteres');
+    }
+
+    // Validar preço
+    if (!product.price || product.price <= 0) {
+      errors.push('Produto precisa ter preço maior que zero');
+    }
+
+    // Validar oferta padrão
+    const defaultOffer = await Offer.findOne({ productId, userId, isDefault: true });
+    if (!defaultOffer) {
+      errors.push('Produto precisa ter uma oferta padrão');
+    }
+
+    // Se todos requisitos OK, ativar produto
+    if (errors.length === 0) {
+      product.status = 'ACTIVE';
+      await product.save();
+      console.log(`✅ Produto ativado automaticamente: ${productId}`);
+      return true;
+    }
+
+    return false;
+  } catch (error) {
+    console.error('❌ Erro ao tentar ativar produto automaticamente:', error);
+    return false;
+  }
+}
+
+/**
  * @desc    Criar uma nova oferta
  * @route   POST /api/offers
  * @access  Private
@@ -51,6 +97,11 @@ export const createOffer = async (req, res, next) => {
     await offer.save();
 
     console.log(`✅ Oferta criada: ${offer._id} para produto ${productId}`);
+
+    // Se for oferta padrão, tentar ativar produto automaticamente
+    if (isDefault) {
+      await tryActivateProduct(productId, userId);
+    }
 
     res.status(201).json({
       data: {
@@ -106,6 +157,9 @@ export const createDefaultOffer = async (req, res, next) => {
     await offer.save();
 
     console.log(`✅ Oferta padrão criada: ${offer._id} para produto ${productId}`);
+
+    // Tentar ativar produto automaticamente
+    await tryActivateProduct(productId, userId);
 
     res.status(201).json({
       data: {
@@ -278,6 +332,9 @@ export const setDefaultOffer = async (req, res, next) => {
     await offer.save();
 
     console.log(`✅ Oferta definida como padrão: ${id}`);
+
+    // Tentar ativar produto automaticamente
+    await tryActivateProduct(offer.productId, userId);
 
     res.status(200).json({
       data: {
