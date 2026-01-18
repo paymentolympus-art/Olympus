@@ -69,6 +69,27 @@ router.get('/:id', authenticate, getProductById);
 router.put('/:id', authenticate, validate(updateProductSchema), updateProduct);
 
 /**
+ * @route   PATCH /api/products/:id/activate
+ * @desc    Ativar produto (valida requisitos)
+ * @access  Private
+ */
+router.patch('/:id/activate', authenticate, activateProduct);
+
+/**
+ * @route   PATCH /api/products/:id/status
+ * @desc    Atualizar status do produto
+ * @access  Private
+ */
+router.patch('/:id/status', authenticate, updateProductStatus);
+
+/**
+ * @route   GET /api/products/:id/validation
+ * @desc    Validar requisitos para ativar produto
+ * @access  Private
+ */
+router.get('/:id/validation', authenticate, validateProduct);
+
+/**
  * @route   DELETE /api/products/:id
  * @desc    Deletar produto
  * @access  Private
