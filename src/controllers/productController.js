@@ -1,6 +1,7 @@
 import Product from '../models/Product.js';
 import Offer from '../models/Offer.js';
 import { errorHandler } from '../middlewares/errorHandler.js';
+import { uploadToVercelBlob } from '../middlewares/uploadVercel.js';
 
 /**
  * @desc    Criar um novo produto
@@ -381,33 +382,47 @@ export const uploadProductImage = async (req, res, next) => {
     const product = await Product.findOne({ _id: id, userId });
 
     if (!product) {
-      // Remover arquivo se produto não foi encontrado
-      if (req.file.path) {
-        const fs = await import('fs');
-        fs.unlinkSync(req.file.path);
-      }
       return next(errorHandler(404, 'Produto não encontrado', 'Produto não foi encontrado ou você não tem permissão para editá-lo'));
     }
 
-    // Construir URL completa da imagem
-    // Em produção, fazer upload para S3/Cloudinary e usar URL deles
-    const backendUrl = process.env.BACKEND_URL || `http://localhost:${process.env.PORT || 3000}`;
-    const imageUrl = `${backendUrl}/uploads/${req.file.filename}`;
+    // Verificar se estamos na Vercel (produção) ou local
+    const isVercel = process.env.VERCEL === '1' || !process.env.BACKEND_URL?.includes('localhost');
     
-    // Se já tinha imagem, remover arquivo antigo
-    if (product.imageUrl && product.imageUrl.startsWith('/uploads/')) {
+    let imageUrl;
+
+    if (isVercel && process.env.BLOB_READ_WRITE_TOKEN) {
+      // PRODUÇÃO: Usar Vercel Blob Storage
       try {
-        const fs = await import('fs');
-        const path = await import('path');
-        const { fileURLToPath } = await import('url');
-        const __filename = fileURLToPath(import.meta.url);
-        const __dirname = path.dirname(__filename);
-        const oldImagePath = path.join(__dirname, '../../', product.imageUrl);
-        if (fs.existsSync(oldImagePath)) {
-          fs.unlinkSync(oldImagePath);
+        imageUrl = await uploadToVercelBlob(
+          req.file.buffer,
+          req.file.originalname,
+          'products'
+        );
+        console.log(`✅ Imagem enviada para Vercel Blob: ${imageUrl}`);
+      } catch (blobError) {
+        console.error('❌ Erro ao fazer upload para Vercel Blob:', blobError);
+        return next(errorHandler(500, 'Erro ao fazer upload da imagem', blobError.message));
+      }
+    } else {
+      // DESENVOLVIMENTO LOCAL: Usar sistema de arquivos
+      const backendUrl = process.env.BACKEND_URL || `http://localhost:${process.env.PORT || 3000}`;
+      imageUrl = `${backendUrl}/uploads/${req.file.filename}`;
+      
+      // Se já tinha imagem local, remover arquivo antigo
+      if (product.imageUrl && product.imageUrl.startsWith('/uploads/')) {
+        try {
+          const fs = await import('fs');
+          const path = await import('path');
+          const { fileURLToPath } = await import('url');
+          const __filename = fileURLToPath(import.meta.url);
+          const __dirname = path.dirname(__filename);
+          const oldImagePath = path.join(__dirname, '../../', product.imageUrl);
+          if (fs.existsSync(oldImagePath)) {
+            fs.unlinkSync(oldImagePath);
+          }
+        } catch (err) {
+          console.warn('⚠️  Erro ao remover imagem antiga:', err.message);
         }
-      } catch (err) {
-        console.warn('⚠️  Erro ao remover imagem antiga:', err.message);
       }
     }
 

@@ -2,6 +2,7 @@ import Orderbump from '../models/Orderbump.js';
 import Product from '../models/Product.js';
 import Offer from '../models/Offer.js';
 import { errorHandler } from '../middlewares/errorHandler.js';
+import { uploadToVercelBlob } from '../middlewares/uploadVercel.js';
 
 /**
  * @desc    Listar produtos e ofertas disponíveis para criar orderbump
