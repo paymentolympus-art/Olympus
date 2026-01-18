@@ -234,6 +234,21 @@ export const getProductById = async (req, res, next) => {
       }
     }
 
+    // Buscar domínios associados ao produto
+    const productDomains = await ProductDomain.find({ productId: id, userId }).lean();
+    const domainIds = productDomains.map(pd => pd.domainId);
+    const domains = await Domain.find({ _id: { $in: domainIds }, userId }).lean();
+
+    // Formatar domínios
+    const formattedDomains = domains.map(domain => ({
+      id: domain._id.toString(),
+      name: domain.name,
+      status: domain.status,
+      cnameName: domain.cnameName || 'pay',
+      cnameValue: domain.cnameValue,
+      cnameType: domain.cnameType || 'CNAME'
+    }));
+
     // Formatar produto com detalhes adicionais
     const productDetails = {
       ...product,
@@ -243,7 +258,7 @@ export const getProductById = async (req, res, next) => {
       // Campos relacionados
       offers: formattedOffers,
       integrations: [],
-      domains: [],
+      domains: formattedDomains,
       productShippingOption: [],
       salesCount: 0,
       defaultOffer: defaultOffer
