@@ -282,6 +282,200 @@ export const getProductById = async (req, res, next) => {
 };
 
 /**
+ * @desc    Validar se produto pode ser ativado
+ * @route   GET /api/products/:id/validation
+ * @access  Private
+ */
+export const validateProduct = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const userId = req.user._id;
+
+    const product = await Product.findOne({ _id: id, userId }).lean();
+    if (!product) {
+      return next(errorHandler(404, 'Produto não encontrado', 'Produto não foi encontrado ou você não tem permissão'));
+    }
+
+    const errors = [];
+    const warnings = [];
+
+    // Validar nome
+    if (!product.name || product.name.length < 3) {
+      errors.push('Nome do produto deve ter pelo menos 3 caracteres');
+    }
+
+    // Validar preço
+    if (!product.price || product.price <= 0) {
+      errors.push('Produto precisa ter preço maior que zero');
+    }
+
+    // Validar oferta padrão
+    const defaultOffer = await Offer.findOne({ productId: id, userId, isDefault: true }).lean();
+    if (!defaultOffer) {
+      errors.push('Produto precisa ter uma oferta padrão');
+    }
+
+    // Avisos (não bloqueiam ativação)
+    if (!product.description || product.description.trim() === '') {
+      warnings.push('Descrição do produto está vazia (recomendado)');
+    }
+
+    if (!product.urlRedirect || product.urlRedirect.trim() === '') {
+      warnings.push('URL de redirecionamento não configurada (recomendado)');
+    }
+
+    const canActivate = errors.length === 0;
+    const isValid = canActivate;
+
+    res.status(200).json({
+      data: {
+        isValid,
+        canActivate,
+        errors,
+        warnings,
+        currentStatus: product.status
+      }
+    });
+
+  } catch (error) {
+    console.error('❌ Erro ao validar produto:', error);
+    next(errorHandler(500, 'Erro interno do servidor', error.message));
+  }
+};
+
+/**
+ * @desc    Ativar produto
+ * @route   PATCH /api/products/:id/activate
+ * @access  Private
+ */
+export const activateProduct = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const userId = req.user._id;
+
+    const product = await Product.findOne({ _id: id, userId });
+    if (!product) {
+      return next(errorHandler(404, 'Produto não encontrado', 'Produto não foi encontrado ou você não tem permissão'));
+    }
+
+    // Validar requisitos
+    const errors = [];
+
+    if (!product.name || product.name.length < 3) {
+      errors.push('Nome do produto deve ter pelo menos 3 caracteres');
+    }
+
+    if (!product.price || product.price <= 0) {
+      errors.push('Produto precisa ter preço maior que zero');
+    }
+
+    const defaultOffer = await Offer.findOne({ productId: id, userId, isDefault: true });
+    if (!defaultOffer) {
+      errors.push('Produto precisa ter uma oferta padrão configurada');
+    }
+
+    if (errors.length > 0) {
+      return res.status(400).json({
+        error: 'Não é possível ativar o produto',
+        message: 'Produto não atende aos requisitos necessários',
+        errors
+      });
+    }
+
+    // Ativar produto
+    product.status = 'ACTIVE';
+    await product.save();
+
+    console.log(`✅ Produto ativado: ${id}`);
+
+    const productJson = product.toJSON();
+    
+    // Formatar URL da imagem
+    if (productJson.imageUrl) {
+      if (productJson.imageUrl.startsWith('http://') || productJson.imageUrl.startsWith('https://')) {
+        if (productJson.imageUrl.includes('localhost') && process.env.BACKEND_URL) {
+          productJson.imageUrl = productJson.imageUrl.replace(/http:\/\/localhost:\d+/, process.env.BACKEND_URL);
+        }
+      } else if (productJson.imageUrl.startsWith('/uploads/')) {
+        const backendUrl = process.env.BACKEND_URL || `http://localhost:${process.env.PORT || 3000}`;
+        productJson.imageUrl = `${backendUrl}${productJson.imageUrl}`;
+      }
+    }
+
+    res.status(200).json({
+      data: productJson,
+      message: 'Produto ativado com sucesso!'
+    });
+
+  } catch (error) {
+    console.error('❌ Erro ao ativar produto:', error);
+    next(errorHandler(500, 'Erro interno do servidor', error.message));
+  }
+};
+
+/**
+ * @desc    Atualizar status do produto
+ * @route   PATCH /api/products/:id/status
+ * @access  Private
+ */
+export const updateProductStatus = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const userId = req.user._id;
+    const { status } = req.body;
+
+    if (!status || !['ACTIVE', 'DISABLED', 'PENDING', 'REJECTED'].includes(status)) {
+      return next(errorHandler(400, 'Status inválido', 'Status deve ser: ACTIVE, DISABLED, PENDING ou REJECTED'));
+    }
+
+    const product = await Product.findOne({ _id: id, userId });
+    if (!product) {
+      return next(errorHandler(404, 'Produto não encontrado', 'Produto não foi encontrado ou você não tem permissão'));
+    }
+
+    // Se tentando ativar, validar requisitos
+    if (status === 'ACTIVE' && product.status !== 'ACTIVE') {
+      const defaultOffer = await Offer.findOne({ productId: id, userId, isDefault: true });
+      if (!defaultOffer) {
+        return next(errorHandler(400, 'Não é possível ativar', 'Produto precisa ter uma oferta padrão configurada'));
+      }
+      
+      if (!product.price || product.price <= 0) {
+        return next(errorHandler(400, 'Não é possível ativar', 'Produto precisa ter preço maior que zero'));
+      }
+    }
+
+    product.status = status;
+    await product.save();
+
+    console.log(`✅ Status do produto atualizado: ${id} → ${status}`);
+
+    const productJson = product.toJSON();
+    
+    // Formatar URL da imagem
+    if (productJson.imageUrl) {
+      if (productJson.imageUrl.startsWith('http://') || productJson.imageUrl.startsWith('https://')) {
+        if (productJson.imageUrl.includes('localhost') && process.env.BACKEND_URL) {
+          productJson.imageUrl = productJson.imageUrl.replace(/http:\/\/localhost:\d+/, process.env.BACKEND_URL);
+        }
+      } else if (productJson.imageUrl.startsWith('/uploads/')) {
+        const backendUrl = process.env.BACKEND_URL || `http://localhost:${process.env.PORT || 3000}`;
+        productJson.imageUrl = `${backendUrl}${productJson.imageUrl}`;
+      }
+    }
+
+    res.status(200).json({
+      data: productJson,
+      message: `Status atualizado para ${status}`
+    });
+
+  } catch (error) {
+    console.error('❌ Erro ao atualizar status:', error);
+    next(errorHandler(500, 'Erro interno do servidor', error.message));
+  }
+};
+
+/**
  * @desc    Atualizar produto
  * @route   PUT /api/products/:id
  * @access  Private (requer autenticação)
@@ -304,6 +498,19 @@ export const updateProduct = async (req, res, next) => {
     if (description !== undefined) product.description = description;
     if (type !== undefined) product.type = type;
     if (paymentFormat !== undefined) product.paymentFormat = paymentFormat;
+    
+    // Ao atualizar status para ACTIVE, validar requisitos
+    if (status !== undefined && status === 'ACTIVE' && product.status !== 'ACTIVE') {
+      const defaultOffer = await Offer.findOne({ productId: id, userId, isDefault: true });
+      if (!defaultOffer) {
+        return next(errorHandler(400, 'Não é possível ativar', 'Produto precisa ter uma oferta padrão configurada. Crie uma oferta padrão primeiro.'));
+      }
+      
+      if (!product.price || product.price <= 0) {
+        return next(errorHandler(400, 'Não é possível ativar', 'Produto precisa ter preço maior que zero'));
+      }
+    }
+    
     if (status !== undefined) product.status = status;
     if (urlBack !== undefined) product.urlBack = urlBack || '';
     if (urlRedirect !== undefined) product.urlRedirect = urlRedirect || '';

@@ -6,7 +6,10 @@ import {
   updateProduct,
   deleteProduct,
   uploadProductImage,
-  removeProductImage
+  removeProductImage,
+  activateProduct,
+  updateProductStatus,
+  validateProduct
 } from '../controllers/productController.js';
 import { authenticate } from '../middlewares/auth.js'; // Middleware de autenticação
 import { validate, createProductSchema, updateProductSchema } from '../middlewares/validation.js';
