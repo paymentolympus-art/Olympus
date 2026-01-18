@@ -36,21 +36,42 @@ const allowedOrigins = [
   'http://localhost:5173'
 ].filter(Boolean); // Remove valores undefined/null
 
+// Função para verificar se origin é permitida
+const isOriginAllowed = (origin) => {
+  if (!origin) return true; // Permite requisições sem origin
+  if (allowedOrigins.includes(origin)) return true;
+  // Em desenvolvimento, permite qualquer origin
+  if (process.env.NODE_ENV !== 'production') return true;
+  return false;
+};
+
+// Middleware CORS personalizado para garantir funcionamento na Vercel
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  
+  if (isOriginAllowed(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin || '*');
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept, Origin');
+    res.setHeader('Access-Control-Expose-Headers', 'Content-Range, X-Content-Range');
+  }
+  
+  // Responder imediatamente a requisições OPTIONS (preflight)
+  if (req.method === 'OPTIONS') {
+    return res.status(204).end();
+  }
+  
+  next();
+});
+
+// Também usar cors do express como fallback
 app.use(cors({
   origin: function (origin, callback) {
-    // Permite requisições sem origin (mobile apps, Postman, etc.)
-    if (!origin) return callback(null, true);
-    
-    // Verifica se a origin está na lista permitida
-    if (allowedOrigins.includes(origin)) {
+    if (isOriginAllowed(origin)) {
       callback(null, true);
     } else {
-      // Em desenvolvimento, permite qualquer origin
-      if (process.env.NODE_ENV !== 'production') {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
+      callback(new Error('Not allowed by CORS'));
     }
   },
   credentials: true,
