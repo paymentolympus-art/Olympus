@@ -98,6 +98,13 @@ router.get('/:id/validation', authenticate, validateProduct);
 router.post('/activate-pending', authenticate, activatePendingProducts);
 
 /**
+ * @route   GET /api/products/activate-pending
+ * @desc    Ativar produtos pendentes (também aceita GET para facilitar teste)
+ * @access  Private
+ */
+router.get('/activate-pending', authenticate, activatePendingProducts);
+
+/**
  * @route   DELETE /api/products/:id
  * @desc    Deletar produto
  * @access  Private
