@@ -1,5 +1,7 @@
 import Product from '../models/Product.js';
 import Offer from '../models/Offer.js';
+import ProductDomain from '../models/ProductDomain.js';
+import Domain from '../models/Domain.js';
 import { errorHandler } from '../middlewares/errorHandler.js';
 import { uploadToVercelBlob } from '../middlewares/uploadVercel.js';
 
