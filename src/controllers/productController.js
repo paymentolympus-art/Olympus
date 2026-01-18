@@ -217,9 +217,18 @@ export const getProductById = async (req, res, next) => {
 
     // Formatar URL da imagem (se for relativa, construir URL completa)
     let imageUrl = product.imageUrl || null;
-    if (imageUrl && imageUrl.startsWith('/uploads/')) {
-      const backendUrl = process.env.BACKEND_URL || `http://localhost:${process.env.PORT || 3000}`;
-      imageUrl = `${backendUrl}${imageUrl}`;
+    if (imageUrl) {
+      // Se já é uma URL completa (http:// ou https://), verificar se é localhost
+      if (imageUrl.startsWith('http://') || imageUrl.startsWith('https://')) {
+        // Se for localhost e temos BACKEND_URL configurado, substituir
+        if (imageUrl.includes('localhost') && process.env.BACKEND_URL) {
+          imageUrl = imageUrl.replace(/http:\/\/localhost:\d+/, process.env.BACKEND_URL);
+        }
+      } else if (imageUrl.startsWith('/uploads/')) {
+        // Se for relativa, construir URL completa
+        const backendUrl = process.env.BACKEND_URL || `http://localhost:${process.env.PORT || 3000}`;
+        imageUrl = `${backendUrl}${imageUrl}`;
+      }
     }
 
     // Formatar produto com detalhes adicionais
