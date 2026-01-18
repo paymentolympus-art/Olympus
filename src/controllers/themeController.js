@@ -6,6 +6,42 @@ import { errorHandler } from '../middlewares/errorHandler.js';
 import { uploadToVercelBlob } from '../middlewares/uploadVercel.js';
 
 /**
+ * @desc    Listar temas disponíveis
+ * @route   GET /theme/user-themes
+ * @access  Private
+ */
+export const getUserThemes = async (req, res, next) => {
+  try {
+    // Retornar lista fixa dos 3 temas disponíveis
+    const themes = [
+      {
+        value: 'SIMPLE',
+        name: 'Simple',
+        description: 'Tema simples e minimalista'
+      },
+      {
+        value: 'SHOP',
+        name: 'Shop',
+        description: 'Tema completo de loja'
+      },
+      {
+        value: 'SELECT',
+        name: 'Select',
+        description: 'Tema customizado'
+      }
+    ];
+
+    res.status(200).json({
+      data: themes
+    });
+
+  } catch (error) {
+    console.error('❌ Erro ao buscar temas disponíveis:', error);
+    next(errorHandler(500, 'Erro interno do servidor', error.message));
+  }
+};
+
+/**
  * @desc    Buscar dados completos do checkout (produto + tema)
  * @route   GET /theme/settings/:productId
  * @access  Private

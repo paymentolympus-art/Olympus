@@ -3,7 +3,8 @@ import {
   getCheckoutSettings,
   updateCheckoutTheme,
   uploadAsset,
-  removeAsset
+  removeAsset,
+  getUserThemes
 } from '../controllers/themeController.js';
 import { authenticate } from '../middlewares/auth.js';
 
@@ -22,6 +23,13 @@ const router = express.Router();
  * Rotas de Tema de Checkout
  * Todas requerem autenticação
  */
+
+/**
+ * @route   GET /theme/user-themes
+ * @desc    Listar temas disponíveis (SIMPLE, SHOP, SELECT)
+ * @access  Private
+ */
+router.get('/user-themes', authenticate, getUserThemes);
 
 /**
  * @route   GET /theme/settings/:productId
