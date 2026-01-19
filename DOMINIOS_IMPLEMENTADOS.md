@@ -62,7 +62,7 @@ Usuário cria: exemplo.com
 Sistema gera automaticamente:
   - cnameType: "CNAME"
   - cnameName: "pay"
-  - cnameValue: "checkout.insanepay.com.br" (ou variável de ambiente)
+  - cnameValue: "checkout.olympuspay.com.br" (ou variável de ambiente)
   - status: "PENDING"
 ```
 
@@ -71,13 +71,13 @@ Sistema gera automaticamente:
 No DNS do domínio (exemplo.com), criar:
   Tipo: CNAME
   Nome: pay
-  Valor: checkout.insanepay.com.br
+  Valor: checkout.olympuspay.com.br
 ```
 
 ### **3. Verificação DNS:**
 ```
 Sistema consulta DNS para verificar:
-  pay.exemplo.com → deve apontar para checkout.insanepay.com.br
+  pay.exemplo.com → deve apontar para checkout.olympuspay.com.br
   
 Se correto: status = "VERIFIED"
 Se incorreto/inexistente: status = "ERROR"
@@ -95,10 +95,10 @@ Produto com oferta "produto-xyz" + domínio "exemplo.com":
 
 ### **Variável de Ambiente:**
 ```env
-DOMAIN_CNAME_VALUE=checkout.insanepay.com.br
+DOMAIN_CNAME_VALUE=checkout.olympuspay.com.br
 ```
 
-Se não definida, usa o valor padrão: `checkout.insanepay.com.br`
+Se não definida, usa o valor padrão: `checkout.olympuspay.com.br`
 
 ---
 
@@ -126,9 +126,10 @@ Se não definida, usa o valor padrão: `checkout.insanepay.com.br`
 
 4. **Verificação DNS:** Usa `dns.resolveCname` do Node.js para consultar DNS.
 
-5. **CNAME Padrão:** Sempre `pay.dominio.com` apontando para `checkout.insanepay.com.br`.
+5. **CNAME Padrão:** Sempre `pay.dominio.com` apontando para `checkout.olympuspay.com.br`.
 
 ---
 
 **🎉 Rotas de domínios implementadas e funcionando!**
+
 

@@ -15,7 +15,7 @@ Crie um arquivo `.env` na pasta `insane-backend` com:
 
 ```env
 PORT=3000
-MONGODB_URI=mongodb://localhost:27017/insane-pay
+MONGODB_URI=mongodb://localhost:27017/olympus-pay
 MERCADOPAGO_ACCESS_TOKEN=TEST-seu-token-aqui
 MP_WEBHOOK_SECRET=seu-secret-aqui
 NODE_ENV=development
@@ -115,4 +115,5 @@ Veja os arquivos:
 - `ETAPA1_COMPLETA.md` - POST /orders
 - `ETAPA2_COMPLETA.md` - GET /orders/:id/status
 - `ETAPA3_COMPLETA.md` - Webhooks
+
 

@@ -106,3 +106,4 @@ O sistema de autenticação está completo e funcionando!
 
 **Agora você pode testar o registro no frontend!** 🎉
 
+

@@ -30,7 +30,7 @@ Value: [COLE AQUI SUA CONNECTION STRING DO MONGODB ATLAS]
 
 **Exemplo:**
 ```
-mongodb+srv://usuario:senha@cluster0.xxxxx.mongodb.net/insane-pay?retryWrites=true&w=majority
+mongodb+srv://usuario:senha@cluster0.xxxxx.mongodb.net/olympus-pay?retryWrites=true&w=majority
 ```
 
 #### **Variável 2: MERCADOPAGO_ACCESS_TOKEN**
@@ -66,7 +66,7 @@ Value: [COLE AQUI UMA CHAVE SECRETA ALEATÓRIA]
 
 **Exemplo (gere uma chave aleatória):**
 ```
-insane-pay-jwt-secret-key-2024-super-secure-random-string-123456789
+olympus-pay-jwt-secret-key-2024-super-secure-random-string-123456789
 ```
 
 **💡 Dica:** Use um gerador online ou crie uma string longa e aleatória.
@@ -87,7 +87,7 @@ Value: https://olympus-payment.vercel.app
 #### **Variável 7: DOMAIN_CNAME_VALUE (OPCIONAL)**
 ```
 Key: DOMAIN_CNAME_VALUE
-Value: checkout.insanepay.com.br
+Value: checkout.olympuspay.com.br
 ```
 ⚠️ **OPCIONAL:** Só adicione se for usar domínios personalizados.
 
@@ -234,4 +234,5 @@ Após seguir todos os passos, seu gateway estará funcionando em produção!
 2. **Frontend:** Verifique se `VITE_URL` está configurada
 3. **Teste:** Acesse `/health` e tente fazer login
 4. **Pronto!** 🎉
+
 

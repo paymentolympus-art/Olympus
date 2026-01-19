@@ -94,3 +94,4 @@ A Vercel pode fazer redeploy automático após criar a variável. Verifique:
 
 **Avise se funcionou ou se encontrou algum problema!** 🚀
 
+

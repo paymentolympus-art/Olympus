@@ -71,7 +71,7 @@ BACKEND_URL = https://olympus-payment.vercel.app
 ### **🟢 OPCIONAL:**
 
 ```
-DOMAIN_CNAME_VALUE = checkout.insanepay.com.br
+DOMAIN_CNAME_VALUE = checkout.olympuspay.com.br
 ```
 
 3. Após adicionar as variáveis, faça um **novo deploy**:
@@ -117,4 +117,5 @@ Aguarde alguns minutos e o novo deploy estará pronto!
 ---
 
 **🎉 Parabéns! Seu backend está no ar!**
+
 

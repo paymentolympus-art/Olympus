@@ -38,7 +38,7 @@ JWT_EXPIRES_IN=7d
 
 ```env
 PORT=3000
-MONGODB_URI=mongodb://localhost:27017/insane-pay
+MONGODB_URI=mongodb://localhost:27017/olympus-pay
 MERCADOPAGO_ACCESS_TOKEN=TEST-seu-token-aqui
 MP_WEBHOOK_SECRET=seu-secret-aqui
 NODE_ENV=development
@@ -285,4 +285,5 @@ Após autenticação funcionar:
 **Sistema de autenticação completo e funcionando! 🎉**
 
 Pronto para testar no frontend!
+
 

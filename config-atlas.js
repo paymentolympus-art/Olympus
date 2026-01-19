@@ -11,7 +11,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // String base do Atlas
-const BASE_CONNECTION_STRING = 'mongodb+srv://insane-pay-admin:<db_password>@clustero.ozs33pi.mongodb.net/insane-pay?retryWrites=true&w=majority&appName=Cluster0';
+const BASE_CONNECTION_STRING = 'mongodb+srv://olympus-pay-admin:<db_password>@clustero.ozs33pi.mongodb.net/olympus-pay?retryWrites=true&w=majority&appName=Cluster0';
 
 function urlEncodePassword(password) {
   const specialChars = {
@@ -86,4 +86,5 @@ if (process.argv[2]) {
   console.log('\nExemplo:');
   console.log('  node config-atlas.js MinhaSenh@123\n');
 }
+
 

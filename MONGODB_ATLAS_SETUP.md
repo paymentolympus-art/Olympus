@@ -15,7 +15,7 @@ No dashboard do Atlas, aguarde até ver:
 1. Clique em **"SEGURANÇA"** no menu lateral → **"Database Access"**
 2. Clique em **"+ Adicionar novo usuário do banco de dados"**
 3. Preencha:
-   - **Nome de usuário**: `insane-pay-admin` (ou outro)
+   - **Nome de usuário**: `olympus-pay-admin` (ou outro)
    - **Senha**: Clique em **"Gerar senha segura"** → **COPIE A SENHA**
    - **Privilégios**: Selecione **"Atlas admin"**
 4. Clique em **"Adicionar usuário"**
@@ -50,12 +50,12 @@ mongodb+srv://<username>:<password>@cluster0.xxxxx.mongodb.net/?retryWrites=true
 ### **PASSO 5: Substituir Credenciais** ✏️
 
 Na string copiada, substitua:
-- `<username>` → O usuário que criou (ex: `insane-pay-admin`)
+- `<username>` → O usuário que criou (ex: `olympus-pay-admin`)
 - `<password>` → A senha que você copiou
 
 **Exemplo:**
 ```
-mongodb+srv://insane-pay-admin:MinhaSenh@123@cluster0.abc123.mongodb.net/insane-pay?retryWrites=true&w=majority
+mongodb+srv://olympus-pay-admin:MinhaSenh@123@cluster0.abc123.mongodb.net/olympus-pay?retryWrites=true&w=majority
 ```
 
 **⚠️ IMPORTANTE:**
@@ -74,7 +74,7 @@ node scripts/format-connection-string.js
 
 ### **PASSO 6: Adicionar Nome do Banco** 📊
 
-**Adicione `/insane-pay`** antes do `?` na string:
+**Adicione `/olympus-pay`** antes do `?` na string:
 
 **Antes:**
 ```
@@ -83,7 +83,7 @@ mongodb+srv://usuario:senha@cluster0.xxxxx.mongodb.net/?retryWrites=true&w=major
 
 **Depois:**
 ```
-mongodb+srv://usuario:senha@cluster0.xxxxx.mongodb.net/insane-pay?retryWrites=true&w=majority
+mongodb+srv://usuario:senha@cluster0.xxxxx.mongodb.net/olympus-pay?retryWrites=true&w=majority
                                                               ↑↑↑↑↑↑↑↑↑↑↑↑↑↑
 ```
 
@@ -96,7 +96,7 @@ mongodb+srv://usuario:senha@cluster0.xxxxx.mongodb.net/insane-pay?retryWrites=tr
 Envie a string de conexão completa, já com usuário e senha substituídos:
 
 ```
-mongodb+srv://insane-pay-admin:MinhaSenh@123@cluster0.abc123.mongodb.net/insane-pay?retryWrites=true&w=majority
+mongodb+srv://olympus-pay-admin:MinhaSenh@123@cluster0.abc123.mongodb.net/olympus-pay?retryWrites=true&w=majority
 ```
 
 ---
@@ -131,7 +131,7 @@ npm run dev
 **Você deve ver:**
 ```
 ✅ MongoDB conectado com sucesso!
-   Database: insane-pay
+   Database: olympus-pay
 ```
 
 ---
@@ -154,4 +154,5 @@ npm run dev
 ---
 
 **🎯 Pronto! Aguardando seus dados para configurar tudo automaticamente!**
+
 

@@ -104,3 +104,4 @@ Write-Host ""
 Write-Host "📖 Para mais detalhes, consulte: DEPLOY_VERCEL.md" -ForegroundColor Cyan
 Write-Host ""
 
+

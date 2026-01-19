@@ -92,7 +92,7 @@ app.use('/uploads', express.static(join(__dirname, '../uploads')));
 // CONEXÃO COM MONGODB
 // ========================================
 
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/insane-pay';
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/olympus-pay';
 
 // Conectar ao MongoDB sem encerrar o processo em caso de erro
 mongoose.connect(MONGODB_URI)
@@ -122,7 +122,7 @@ mongoose.connection.on('error', (error) => {
 // Rota raiz
 app.get('/', (req, res) => {
   res.status(200).json({
-    name: 'Insane Pay API',
+    name: 'Olympus Pay API',
     description: 'Gateway de pagamentos PIX',
     version: '1.0.0',
     status: 'online',
@@ -152,7 +152,7 @@ app.get('/health', (req, res) => {
 // Rota de API info
 app.get('/api', (req, res) => {
   res.status(200).json({
-    name: 'Insane Pay API',
+    name: 'Olympus Pay API',
     version: '1.0.0',
     description: 'Gateway de pagamentos PIX',
     endpoints: {

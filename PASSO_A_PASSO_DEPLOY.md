@@ -149,7 +149,7 @@ Valor: https://seu-backend.vercel.app
 #### **Domínio CNAME (Opcional):**
 ```
 Nome: DOMAIN_CNAME_VALUE
-Valor: checkout.insanepay.com.br
+Valor: checkout.olympuspay.com.br
 ```
 
 ### 5.4 Fazer Deploy
@@ -276,4 +276,5 @@ A Vercel **não persiste arquivos**. Para uploads funcionarem:
 ---
 
 **🎉 Boa sorte com o deploy!**
+
 

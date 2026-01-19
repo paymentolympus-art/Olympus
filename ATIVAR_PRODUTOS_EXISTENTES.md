@@ -123,3 +123,4 @@ Após ativar os produtos:
 - ✅ Clientes poderão acessar via domínio personalizado
 - ✅ Não haverá mais erro "Produto indisponível"
 
+

@@ -47,7 +47,7 @@ async function main() {
   const clusterUrl = await question('🌐 Cole a URL do cluster (ex: cluster0.xxxxx.mongodb.net): ');
   const username = await question('👤 Usuário do banco de dados: ');
   const password = await question('🔐 Senha do banco de dados: ');
-  const databaseName = await question('📊 Nome do banco de dados (padrão: insane-pay): ') || 'insane-pay';
+  const databaseName = await question('📊 Nome do banco de dados (padrão: olympus-pay): ') || 'olympus-pay';
 
   // Codificar senha se necessário
   const encodedPassword = urlEncodePassword(password);
@@ -67,4 +67,5 @@ async function main() {
 }
 
 main().catch(console.error);
+
 

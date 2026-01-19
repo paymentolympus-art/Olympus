@@ -59,7 +59,7 @@ Edite o arquivo `insane-backend\.env`:
 
 ```env
 PORT=3000
-MONGODB_URI=mongodb://localhost:27017/insane-pay
+MONGODB_URI=mongodb://localhost:27017/olympus-pay
 MERCADOPAGO_ACCESS_TOKEN=TEST-seu-token-real-aqui
 MP_WEBHOOK_SECRET=seu-secret-real-aqui
 NODE_ENV=development
@@ -92,7 +92,7 @@ npm start
 **No terminal, você deve ver:**
 ```
 ✅ MongoDB conectado com sucesso!
-   Database: insane-pay
+   Database: olympus-pay
 
 🚀 Servidor iniciado com sucesso!
    URL: http://localhost:3000
@@ -215,4 +215,5 @@ Após o servidor rodar:
 ---
 
 **Ainda com problemas? Verifique os logs do terminal para ver o erro específico!**
+
 

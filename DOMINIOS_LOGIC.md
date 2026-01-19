@@ -47,7 +47,7 @@ Usuário cria: exemplo.com
 Sistema gera:
   - cnameType: "CNAME"
   - cnameName: "pay"
-  - cnameValue: "checkout.insanepay.com.br" (ou configurável)
+  - cnameValue: "checkout.olympuspay.com.br" (ou configurável)
 ```
 
 ### **2. Instruções para o Usuário:**
@@ -55,13 +55,13 @@ Sistema gera:
 No DNS do domínio (exemplo.com), criar:
   Tipo: CNAME
   Nome: pay
-  Valor: checkout.insanepay.com.br
+  Valor: checkout.olympuspay.com.br
 ```
 
 ### **3. Verificação:**
 ```
 Sistema consulta DNS para verificar se:
-  pay.exemplo.com → aponta para checkout.insanepay.com.br
+  pay.exemplo.com → aponta para checkout.olympuspay.com.br
 ```
 
 ### **4. URLs Geradas:**
@@ -82,7 +82,7 @@ Produto com oferta "produto-xyz" + domínio "exemplo.com":
   status: "PENDING" | "VERIFIED" | "ERROR";
   cnameType: "CNAME";
   cnameName: "pay";
-  cnameValue: string; // "checkout.insanepay.com.br"
+  cnameValue: string; // "checkout.olympuspay.com.br"
   userId: string;
   productDomain: ProductDomain[];
   createdAt: string;
@@ -106,7 +106,7 @@ Produto com oferta "produto-xyz" + domínio "exemplo.com":
 
 ### **Como verificar:**
 1. Consultar DNS do subdomínio: `pay.exemplo.com`
-2. Verificar se retorna CNAME para `checkout.insanepay.com.br`
+2. Verificar se retorna CNAME para `checkout.olympuspay.com.br`
 3. Atualizar status:
    - ✅ CNAME correto → `VERIFIED`
    - ❌ CNAME incorreto/inexistente → `ERROR`
@@ -153,8 +153,9 @@ const resolveCname = promisify(dns.resolveCname);
 ## 📝 NOTAS IMPORTANTES
 
 1. **CNAME Padrão:** Sempre `pay.dominio.com` (cnameName: "pay")
-2. **Valor do CNAME:** Configurável (ex: `checkout.insanepay.com.br`)
+2. **Valor do CNAME:** Configurável (ex: `checkout.olympuspay.com.br`)
 3. **Produto x Domínio:** Relação 1:N (um produto pode ter apenas 1 domínio)
 4. **Domínio x Produto:** Relação 1:N (um domínio pode ter vários produtos)
 5. **Verificação DNS:** Consulta assíncrona, não bloqueia criação
+
 

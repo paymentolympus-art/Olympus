@@ -110,7 +110,7 @@ Valor: https://seu-projeto.vercel.app
 **7. Domínio CNAME:**
 ```
 Nome: DOMAIN_CNAME_VALUE
-Valor: checkout.insanepay.com.br
+Valor: checkout.olympuspay.com.br
 ```
 
 ---
@@ -224,4 +224,5 @@ Após o deploy funcionar:
 ---
 
 **🎉 Boa sorte com o deploy!**
+
 

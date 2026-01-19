@@ -178,3 +178,4 @@
 3. Ajustar rotas no frontend para incluir `/api` onde necessário
 4. Implementar rotas restantes conforme prioridade
 
+

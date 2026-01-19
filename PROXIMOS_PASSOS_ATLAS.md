@@ -18,7 +18,7 @@
 
 **Preencha:**
 - **Método de autenticação**: Selecione **"Password"**
-- **Nome de usuário**: Digite `insane-pay-admin` (ou outro nome)
+- **Nome de usuário**: Digite `olympus-pay-admin` (ou outro nome)
 - **Senha**: 
   - Clique em **"Gerar senha segura"** (Auto-generate Secure Password)
   - **⚠️ COPIE A SENHA AGORA** (você não verá mais depois!)
@@ -73,7 +73,7 @@
    ```
 
 6. **Substitua:**
-   - `<username>` → O usuário que criou (ex: `insane-pay-admin`)
+   - `<username>` → O usuário que criou (ex: `olympus-pay-admin`)
    - `<password>` → A senha que você copiou
    
    **⚠️ Se a senha tiver caracteres especiais**, use URL encoding:
@@ -83,11 +83,11 @@
    - `%` → `%25`
 
 7. **Adicione o nome do banco:**
-   - Adicione `/insane-pay` antes do `?`
+   - Adicione `/olympus-pay` antes do `?`
    
    **Exemplo final:**
    ```
-   mongodb+srv://insane-pay-admin:MinhaSenh@123@cluster0.xxxxx.mongodb.net/insane-pay?retryWrites=true&w=majority
+   mongodb+srv://olympus-pay-admin:MinhaSenh@123@cluster0.xxxxx.mongodb.net/olympus-pay?retryWrites=true&w=majority
    ```
 
 ---
@@ -130,10 +130,11 @@ npm run dev
 **Você deve ver:**
 ```
 ✅ MongoDB conectado com sucesso!
-   Database: insane-pay
+   Database: olympus-pay
 ```
 
 ---
 
 **🎯 Faça os 3 passos acima e me envie a string de conexão ou os dados!**
+
 

@@ -1,6 +1,6 @@
 @echo off
 echo ========================================
-echo   INSANE PAY BACKEND - INICIANDO
+echo   OLYMPUS PAY BACKEND - INICIANDO
 echo ========================================
 echo.
 
@@ -10,7 +10,7 @@ if not exist .env (
     echo.
     echo Criando arquivo .env basico...
     echo PORT=3000 > .env
-    echo MONGODB_URI=mongodb://localhost:27017/insane-pay >> .env
+    echo MONGODB_URI=mongodb://localhost:27017/olympus-pay >> .env
     echo MERCADOPAGO_ACCESS_TOKEN=TEST-seu-token-aqui >> .env
     echo MP_WEBHOOK_SECRET=seu-secret-aqui >> .env
     echo NODE_ENV=development >> .env
@@ -48,4 +48,5 @@ if exist node_modules\nodemon (
 )
 
 pause
+
 

@@ -93,3 +93,4 @@ const Sale = mongoose.model('Sale', saleSchema);
 
 export default Sale;
 
+

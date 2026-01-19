@@ -1,5 +1,5 @@
 {
-  "name": "insane-pay-backend",
+  "name": "olympus-pay-backend",
   "version": "1.0.0",
   "description": "Backend para gateway de pagamentos PIX usando Mercado Pago",
   "main": "src/app.js",

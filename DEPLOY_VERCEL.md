@@ -77,7 +77,7 @@ BACKEND_URL = https://seu-backend.vercel.app
 
 #### **Domínio CNAME (opcional):**
 ```
-DOMAIN_CNAME_VALUE = checkout.insanepay.com.br
+DOMAIN_CNAME_VALUE = checkout.olympuspay.com.br
 ```
 
 ---
@@ -265,4 +265,5 @@ Atualize o frontend para usar esta URL nas requisições!
 ---
 
 **🎉 Boa sorte com o deploy!**
+
 

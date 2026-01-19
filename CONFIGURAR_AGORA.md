@@ -3,18 +3,18 @@
 ## ✅ O QUE JÁ TEMOS:
 
 - ✅ **Cluster**: `clustero.ozs33pi.mongodb.net`
-- ✅ **Usuário**: `insane-pay-admin`
-- ✅ **String base**: `mongodb+srv://insane-pay-admin:<db_password>@clustero.ozs33pi.mongodb.net/?appName=Cluster0`
+- ✅ **Usuário**: `olympus-pay-admin`
+- ✅ **String base**: `mongodb+srv://olympus-pay-admin:<db_password>@clustero.ozs33pi.mongodb.net/?appName=Cluster0`
 
 ## 🔐 O QUE FALTA:
 
-**Apenas a SENHA que você criou para o usuário `insane-pay-admin`**
+**Apenas a SENHA que você criou para o usuário `olympus-pay-admin`**
 
 ---
 
 ## 🚀 OPÇÃO 1: EU CONFIGURO TUDO (Mais Fácil)
 
-**Me envie a senha** que você criou quando criou o usuário `insane-pay-admin`.
+**Me envie a senha** que você criou quando criou o usuário `olympus-pay-admin`.
 
 **Exemplo:**
 ```
@@ -66,12 +66,12 @@ node config-atlas.js MinhaSenh@123
 A string final será:
 
 ```
-mongodb+srv://insane-pay-admin:SENHA_CODIFICADA@clustero.ozs33pi.mongodb.net/insane-pay?retryWrites=true&w=majority&appName=Cluster0
+mongodb+srv://olympus-pay-admin:SENHA_CODIFICADA@clustero.ozs33pi.mongodb.net/olympus-pay?retryWrites=true&w=majority&appName=Cluster0
 ```
 
 **Onde:**
 - `SENHA_CODIFICADA` = sua senha codificada (se necessário)
-- `/insane-pay` = nome do banco de dados
+- `/olympus-pay` = nome do banco de dados
 - `?retryWrites=true&w=majority` = parâmetros de segurança
 
 ---
@@ -85,7 +85,7 @@ npm run dev
 **Você deve ver:**
 ```
 ✅ MongoDB conectado com sucesso!
-   Database: insane-pay
+   Database: olympus-pay
 ```
 
 ---
@@ -104,4 +104,5 @@ A: Quando você criou o usuário, o Atlas mostrou a senha. Se você não copiou,
 ---
 
 **🎯 Envie a senha para eu configurar tudo automaticamente!**
+
 

@@ -70,3 +70,4 @@ No console do navegador (F12 → Console):
 
 **🎉 Backend reiniciado! Agora teste o registro no frontend!**
 
+

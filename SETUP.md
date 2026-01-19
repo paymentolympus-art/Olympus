@@ -12,7 +12,7 @@ Crie um arquivo `.env` na raiz do projeto com o seguinte conteúdo:
 
 ```env
 PORT=3000
-MONGODB_URI=mongodb://localhost:27017/insane-pay
+MONGODB_URI=mongodb://localhost:27017/olympus-pay
 MERCADOPAGO_ACCESS_TOKEN=SEU_TOKEN_AQUI
 MP_WEBHOOK_SECRET=SEU_SECRET_AQUI
 NODE_ENV=development

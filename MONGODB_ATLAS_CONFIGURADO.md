@@ -5,16 +5,16 @@
 ### ✅ String de Conexão Configurada
 
 ```
-mongodb+srv://insane-pay-admin:Ir7hWIxIvIK5IZua@clustero.ozs33pi.mongodb.net/insane-pay?retryWrites=true&w=majority&appName=Cluster0
+mongodb+srv://olympus-pay-admin:Ir7hWIxIvIK5IZua@clustero.ozs33pi.mongodb.net/olympus-pay?retryWrites=true&w=majority&appName=Cluster0
 ```
 
 ### ✅ Arquivo .env Atualizado
 
 O arquivo `.env` foi atualizado automaticamente com:
 - ✅ `MONGODB_URI` configurado para MongoDB Atlas
-- ✅ Banco de dados: `insane-pay`
+- ✅ Banco de dados: `olympus-pay`
 - ✅ Cluster: `clustero.ozs33pi.mongodb.net`
-- ✅ Usuário: `insane-pay-admin`
+- ✅ Usuário: `olympus-pay-admin`
 
 ---
 
@@ -32,7 +32,7 @@ npm run dev
 **Você deve ver no console:**
 ```
 ✅ MongoDB conectado com sucesso!
-   Database: insane-pay
+   Database: olympus-pay
 ```
 
 ### 3. Testar Endpoint
@@ -109,7 +109,7 @@ http://localhost:3000/health
 
 1. Vá em **"BANCO DE DADOS"** → **"Explorador de Dados"** (Data Explorer)
 2. Selecione o cluster **"Cluster0"**
-3. Expanda **"insane-pay"** → **"users"**
+3. Expanda **"olympus-pay"** → **"users"**
 4. Você verá os usuários registrados!
 
 ---
@@ -117,7 +117,7 @@ http://localhost:3000/health
 ## ✅ CHECKLIST FINAL
 
 - [x] Cluster MongoDB Atlas criado
-- [x] Usuário do banco criado (`insane-pay-admin`)
+- [x] Usuário do banco criado (`olympus-pay-admin`)
 - [x] Whitelist de IP configurada
 - [x] String de conexão obtida
 - [x] `.env` atualizado com `MONGODB_URI`
@@ -161,4 +161,5 @@ http://localhost:3000/health
 ---
 
 **🎉 TUDO CONFIGURADO! Agora é só testar!**
+
 

@@ -33,7 +33,7 @@ Na sua tela do Atlas, você vê:
 **Opção 1: Autenticação por Senha (Recomendado)**
 
 1. **Método de autenticação**: Selecione **"Password"**
-2. **Nome de usuário**: Digite `insane-pay-admin` (ou outro nome)
+2. **Nome de usuário**: Digite `olympus-pay-admin` (ou outro nome)
 3. **Senha**: 
    - Clique em **"Gerar senha segura"** (Auto-generate Secure Password)
    - **COPIE A SENHA** (você não verá mais depois!)
@@ -92,12 +92,12 @@ mongodb+srv://<username>:<password>@cluster0.xxxxx.mongodb.net/?retryWrites=true
 **⚠️ IMPORTANTE**: 
 - A string tem `<username>` e `<password>` como placeholders
 - Você precisa substituir por:
-  - `<username>` → o usuário que criou (ex: `insane-pay-admin`)
+  - `<username>` → o usuário que criou (ex: `olympus-pay-admin`)
   - `<password>` → a senha que você copiou (pode ter caracteres especiais, então use URL encoding se necessário)
 
 **Exemplo de string final:**
 ```
-mongodb+srv://insane-pay-admin:MinhaSenh@123@cluster0.xxxxx.mongodb.net/?retryWrites=true&w=majority
+mongodb+srv://olympus-pay-admin:MinhaSenh@123@cluster0.xxxxx.mongodb.net/?retryWrites=true&w=majority
 ```
 
 **⚠️ Se a senha tiver caracteres especiais**, você precisa fazer URL encoding:
@@ -126,12 +126,12 @@ Vou atualizar o arquivo `.env` com a string de conexão do Atlas.
 ### 5.2 Estrutura da String no .env
 
 ```env
-MONGODB_URI=mongodb+srv://usuario:senha@cluster0.xxxxx.mongodb.net/insane-pay?retryWrites=true&w=majority
+MONGODB_URI=mongodb+srv://usuario:senha@cluster0.xxxxx.mongodb.net/olympus-pay?retryWrites=true&w=majority
 ```
 
 **Nota importante:**
-- Adicione o nome do banco **`/insane-pay`** antes do `?`
-- Isso cria/usará o banco `insane-pay` automaticamente
+- Adicione o nome do banco **`/olympus-pay`** antes do `?`
+- Isso cria/usará o banco `olympus-pay` automaticamente
 
 ---
 
@@ -147,7 +147,7 @@ npm run dev
 **Se funcionar, você verá:**
 ```
 ✅ MongoDB conectado com sucesso!
-   Database: insane-pay
+   Database: olympus-pay
 ```
 
 **Se der erro:**
@@ -178,7 +178,7 @@ mongodb+srv://<username>:<password>@cluster0.abc123.mongodb.net/?retryWrites=tru
 
 **String corrigida (no .env):**
 ```env
-MONGODB_URI=mongodb+srv://insane-pay-admin:MinhaSenh@123@cluster0.abc123.mongodb.net/insane-pay?retryWrites=true&w=majority
+MONGODB_URI=mongodb+srv://olympus-pay-admin:MinhaSenh@123@cluster0.abc123.mongodb.net/olympus-pay?retryWrites=true&w=majority
 ```
 
 ---
@@ -197,4 +197,5 @@ MONGODB_URI=mongodb+srv://insane-pay-admin:MinhaSenh@123@cluster0.abc123.mongodb
 ---
 
 **🎉 Pronto para configurar! Aguardando seus dados...**
+
 

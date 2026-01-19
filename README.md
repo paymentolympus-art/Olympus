@@ -1,4 +1,4 @@
-# 🚀 Insane Pay Backend - Gateway de Pagamentos PIX
+# 🚀 Olympus Pay Backend - Gateway de Pagamentos PIX
 
 Backend para gateway de pagamentos PIX usando **Node.js + Express.js + MongoDB + Mercado Pago**.
 
@@ -37,7 +37,7 @@ Edite o arquivo `.env` e configure:
 
 ```env
 PORT=3000
-MONGODB_URI=mongodb://localhost:27017/insane-pay
+MONGODB_URI=mongodb://localhost:27017/olympus-pay
 MERCADOPAGO_ACCESS_TOKEN=TEST-seu-token-aqui
 NODE_ENV=development
 ```
@@ -88,7 +88,7 @@ npm start
 Você deve ver:
 ```
 ✅ MongoDB conectado com sucesso!
-   Database: insane-pay
+   Database: olympus-pay
 
 🚀 Servidor iniciado com sucesso!
    URL: http://localhost:3000
@@ -268,7 +268,7 @@ Você pode usar o MongoDB Compass ou mongo shell:
 
 ```javascript
 // Conectar ao MongoDB
-use insane-pay
+use olympus-pay
 
 // Listar todos os pedidos
 db.orders.find().pretty()
@@ -350,5 +350,6 @@ Em caso de dúvidas ou problemas, verifique:
 
 ---
 
-**Desenvolvido com ❤️ para Insane Pay**
+**Desenvolvido com ❤️ para Olympus Pay**
+
 

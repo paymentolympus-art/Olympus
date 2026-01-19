@@ -107,3 +107,4 @@ O slug da oferta é `oferta01`, não `of1`.
 Exemplo: `https://pay.testandogat.shop/oferta01`
 - Slug: `oferta01`
 
+

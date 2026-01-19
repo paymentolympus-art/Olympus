@@ -158,3 +158,4 @@ netstat -ano | findstr :3000
 
 **⚠️ Lembre-se**: Backend Node.js serve apenas APIs REST, não arquivos HTML estáticos!
 
+

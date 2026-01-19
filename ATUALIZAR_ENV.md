@@ -26,7 +26,7 @@ Seu arquivo `.env` deve ter:
 
 ```env
 PORT=3000
-MONGODB_URI=mongodb://localhost:27017/insane-pay
+MONGODB_URI=mongodb://localhost:27017/olympus-pay
 MERCADOPAGO_ACCESS_TOKEN=TEST-seu-token-aqui
 MP_WEBHOOK_SECRET=seu-secret-aqui
 NODE_ENV=development
@@ -40,4 +40,5 @@ JWT_EXPIRES_IN=7d
 ---
 
 **⚠️ IMPORTANTE**: Reinicie o servidor após alterar o `.env`!
+
 

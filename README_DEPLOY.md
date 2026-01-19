@@ -56,3 +56,4 @@ BACKEND_URL = https://seu-backend.vercel.app (atualize após deploy)
 
 **✅ Pronto para deploy!**
 
+

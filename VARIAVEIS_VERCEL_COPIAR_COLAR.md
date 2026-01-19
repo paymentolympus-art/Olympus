@@ -14,7 +14,7 @@ MONGODB_URI
 
 **Exemplo:**
 ```
-mongodb+srv://usuario:senha@cluster0.xxxxx.mongodb.net/insane-pay?retryWrites=true&w=majority
+mongodb+srv://usuario:senha@cluster0.xxxxx.mongodb.net/olympus-pay?retryWrites=true&w=majority
 ```
 
 ---
@@ -53,7 +53,7 @@ JWT_SECRET
 
 **Exemplo (você pode usar esta ou criar uma nova):**
 ```
-insane-pay-jwt-secret-key-2024-super-secure-random-string-123456789-abcdefghijklmnopqrstuvwxyz
+olympus-pay-jwt-secret-key-2024-super-secure-random-string-123456789-abcdefghijklmnopqrstuvwxyz
 ```
 
 **💡 Dica:** Gere uma chave aleatória longa e segura!
@@ -89,7 +89,7 @@ DOMAIN_CNAME_VALUE
 ```
 **Valor:**
 ```
-checkout.insanepay.com.br
+checkout.olympuspay.com.br
 ```
 ⚠️ **OPCIONAL:** Só adicione se for usar domínios personalizados.
 
@@ -142,4 +142,5 @@ https://olympus-payment.vercel.app
 ---
 
 **🎉 Pronto! Após adicionar todas, seu gateway estará funcionando!**
+
 
