@@ -151,3 +151,4 @@ Após autenticação funcionar:
 **Agora você pode testar o registro no frontend!**
 
 
+

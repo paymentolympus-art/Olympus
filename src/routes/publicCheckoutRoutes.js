@@ -31,3 +31,4 @@ router.get('/:slug', getPublicCheckout);
 export default router;
 
 
+

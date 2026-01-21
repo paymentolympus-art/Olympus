@@ -1,5 +1,8 @@
 import jwt from 'jsonwebtoken';
+import mongoose from 'mongoose';
 import User from '../models/User.js';
+import Sale from '../models/Sale.js';
+import Award from '../models/Award.js';
 import { cpf, cnpj } from 'cpf-cnpj-validator';
 import { errorHandler } from '../middlewares/errorHandler.js';
 
@@ -375,11 +378,47 @@ export const loginUser = async (req, res, next) => {
  */
 export const getUserAwards = async (req, res, next) => {
   try {
-    // Por enquanto, retornar array vazio
-    // Em produção, implementar sistema de conquistas/prêmios
+    const userId = req.user.userId;
+
+    // 1. Calcular total de vendas do usuário (apenas vendas completadas)
+    const totalSales = await Sale.aggregate([
+      {
+        $match: {
+          userId: new mongoose.Types.ObjectId(userId),
+          status: 'COMPLETED'
+        }
+      },
+      {
+        $group: {
+          _id: null,
+          total: { $sum: '$amount' }
+        }
+      }
+    ]);
+
+    const salesTotal = totalSales.length > 0 ? totalSales[0].total : 0;
+
+    // 2. Buscar todos os awards ativos ordenados por valor mínimo
+    const allAwards = await Award.findActive();
+
+    // 3. Determinar quais awards foram desbloqueados
+    const awardsUnlocked = allAwards
+      .filter(award => salesTotal >= award.minValue)
+      .map(award => award.toJSON());
+
+    // 4. Determinar o próximo award (primeiro que ainda não foi desbloqueado)
+    const nextAward = allAwards
+      .find(award => salesTotal < award.minValue);
+
+    // 5. Formatar resposta no formato esperado pelo frontend
+    // Frontend espera: response.data.data.data
     res.status(200).json({
       data: {
-        awards: []
+        data: {
+          sales: salesTotal.toString(),
+          awardsUnlocked: awardsUnlocked,
+          nextAward: nextAward ? nextAward.toJSON() : null
+        }
       }
     });
   } catch (error) {

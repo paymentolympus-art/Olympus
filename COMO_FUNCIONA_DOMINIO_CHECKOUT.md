@@ -158,3 +158,4 @@ pay.testandogat.shop → olympus-payment.vercel.app
 **Após configurar, faça redeploy e teste!** 🚀
 
 
+

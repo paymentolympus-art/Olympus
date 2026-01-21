@@ -129,3 +129,4 @@ Para testes rápidos, use **Vercel Blob Storage** (Opção 1), pois:
 - `src/controllers/orderbumpController.js` (método uploadOrderbumpImage)
 
 
+

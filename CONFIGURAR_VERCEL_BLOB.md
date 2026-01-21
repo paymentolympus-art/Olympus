@@ -132,3 +132,4 @@ Após seguir esses passos, o upload de imagens funcionará perfeitamente em prod
 **📌 Nota:** O código já foi atualizado para usar Vercel Blob automaticamente quando `BLOB_READ_WRITE_TOKEN` estiver configurado!
 
 
+

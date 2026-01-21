@@ -163,3 +163,4 @@ Após autenticação funcionar:
 **Agora você pode testar o registro no frontend em http://localhost:5173/register!**
 
 
+
